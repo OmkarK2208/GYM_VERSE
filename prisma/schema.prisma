@@ -1,0 +1,76 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  age       Int?
+  gender    String?
+  height    Float?   // in cm
+  weight    Float?   // in kg
+  goal      String?  // Bulk, Cut, Maintain
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  workouts  Workout[]
+  weights   WeightLog[]
+  waterLogs WaterLog[]
+  dietLogs  DietLog[]
+}
+
+model Workout {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date      DateTime @default(now())
+  category  String   // Chest, Back, Legs, Shoulders, Arms, Cardio
+  duration  Int?     // in minutes
+  createdAt DateTime @default(now())
+
+  exercises ExerciseLog[]
+}
+
+model ExerciseLog {
+  id        String   @id @default(cuid())
+  workoutId String
+  workout   Workout  @relation(fields: [workoutId], references: [id], onDelete: Cascade)
+  name      String
+  weight    Float    // in kg
+  sets      Int
+  reps      Int
+  isPr      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model WeightLog {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  weight    Float
+  date      DateTime @default(now())
+}
+
+model WaterLog {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  glasses   Int      @default(0)
+  date      DateTime @default(now())
+}
+
+model DietLog {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  meal      String
+  calories  Int
+  protein   Int      @default(0)
+  date      DateTime @default(now())
+}
