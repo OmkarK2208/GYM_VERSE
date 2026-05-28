@@ -35,7 +35,13 @@ export async function setSession(userId) {
   const session = await encrypt({ userId, expires });
 
   const c = await cookies();
-  c.set('session', session, { expires, httpOnly: true, path: '/' });
+  c.set('session', session, { 
+    expires, 
+    httpOnly: true, 
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    path: '/' 
+  });
 }
 
 export async function destroySession() {
