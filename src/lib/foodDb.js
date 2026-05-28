@@ -8,7 +8,7 @@ const FOODS = {
   "tofu": [76, 8], "fish": [206, 22], "salmon": [208, 20], "tuna": [130, 29],
   "prawns": [99, 24], "shrimp": [99, 24], "mutton": [294, 25], "lamb": [294, 25],
   "beef": [250, 26], "pork": [242, 27], "turkey": [135, 30],
-  "whey protein": [400, 80], "protein shake": [120, 24], "protein bar": [350, 20],
+  "whey protein": [400, 80], "protein shake": [120, 24], "protein bar": [350, 20], "soya chunks": [345, 52],
 
   // Dairy
   "milk": [42, 3], "whole milk": [61, 3], "curd": [60, 3], "yogurt": [59, 10],
@@ -20,9 +20,9 @@ const FOODS = {
   "roti": [300, 9], "chapati": [300, 9], "naan": [260, 9], "paratha": [326, 7],
   "bread": [265, 9], "whole wheat bread": [247, 13], "oats": [389, 17], "oatmeal": [71, 3],
   "pasta": [131, 5], "noodles": [138, 5], "maggi": [400, 9],
-  "poha": [130, 3], "upma": [150, 4], "idli": [39, 2], "dosa": [168, 4],
+  "poha": [130, 3], "upma": [150, 4], "idli": [39, 2], "dosa": [168, 4], "utthappa": [180, 4], "uttapam": [180, 4],
   "dal": [116, 9], "lentils": [116, 9], "rajma": [127, 9], "chole": [164, 9],
-  "moong dal": [105, 7], "toor dal": [120, 8], "khichdi": [115, 5],
+  "moong dal": [105, 7], "toor dal": [120, 8], "khichdi": [115, 5], "khichadi": [115, 5],
 
   // Fruits
   "banana": [89, 1], "apple": [52, 0], "mango": [60, 1], "orange": [47, 1],
