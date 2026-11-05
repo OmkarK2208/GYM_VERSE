@@ -38,57 +38,68 @@ export default function DashboardLayout({ children }) {
   const SidebarInner = () => (
     <div className="flex flex-col h-full">
       {/* Logo */}
-      <div className={`flex items-center gap-3 p-4 border-b border-white/5 ${collapsed ? "justify-center" : ""}`}>
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center"
-          style={{ background: "linear-gradient(135deg,#FF2D20,#FF6B35)", boxShadow: "0 0 20px rgba(255,45,32,0.5)" }}
-        >
-          <Dumbbell className="w-5 h-5 text-white" />
-        </motion.div>
+      <div className={`relative flex items-center gap-3 p-5 ${collapsed ? "justify-center" : ""}`}>
+        {/* Lime glow at top */}
+        <div className="absolute top-0 left-0 right-0 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(200,243,106,0.4), transparent)" }} />
+        <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-32 h-20 pointer-events-none"
+          style={{ background: "radial-gradient(ellipse,rgba(200,243,106,0.12),transparent 70%)" }} />
+
+        {/* GV Monogram */}
+        <div className="w-9 h-9 rounded-xl flex-shrink-0 flex items-center justify-center font-black text-sm"
+          style={{ background: "rgba(200,243,106,0.12)", border: "1px solid rgba(200,243,106,0.25)", color: "#C8F36A" }}>
+          GV
+        </div>
+
         <AnimatePresence>
           {!collapsed && (
             <motion.div initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -8 }} transition={{ duration: 0.18 }}>
-              <div className="text-base font-black tracking-widest" style={{ background: "linear-gradient(90deg,#FF2D20,#FF6B35)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+              <div className="text-sm font-black tracking-[4px] uppercase" style={{ color: "#C8F36A" }}>
                 GYMVERSE
               </div>
-              <div className="text-[9px] tracking-[3px] text-gray-500 uppercase">Pro Dashboard</div>
+              <div className="text-[9px] tracking-[2px] uppercase" style={{ color: "#5C5E58" }}>Pro Dashboard</div>
             </motion.div>
           )}
         </AnimatePresence>
       </div>
 
+      {/* Divider */}
+      <div className="mx-4 h-px mb-2" style={{ background: "rgba(255,255,255,0.06)" }} />
+
       {/* Nav Items */}
-      <nav className="flex-1 p-2 space-y-1 overflow-y-auto">
+      <nav className="flex-1 px-2 py-2 space-y-0.5 overflow-y-auto">
         {NAV.map((item) => {
           const on = active(item.href);
           const Icon = item.icon;
           return (
             <Link key={item.href} href={item.href}>
               <motion.div
-                whileHover={{ x: collapsed ? 0 : 3 }}
+                whileHover={{ x: collapsed ? 0 : 2 }}
                 whileTap={{ scale: 0.97 }}
                 className={`relative flex items-center gap-3 rounded-xl px-3 py-2.5 cursor-pointer transition-all duration-200 group
-                  ${on ? "border border-red-500/20" : "border border-transparent hover:bg-white/5"}
                   ${collapsed ? "justify-center px-2" : ""}`}
-                style={on ? { background: "linear-gradient(135deg,rgba(255,45,32,0.12),rgba(255,107,53,0.06))" } : {}}
+                style={on
+                  ? { background: "rgba(200,243,106,0.08)", border: "1px solid rgba(200,243,106,0.15)" }
+                  : { background: "transparent", border: "1px solid transparent" }}
               >
+                {/* Active lime left-bar */}
                 {on && (
                   <motion.div layoutId="desk-pill"
                     className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-r-full"
-                    style={{ background: `linear-gradient(180deg,${item.from},${item.to})` }}
+                    style={{ background: "#C8F36A", boxShadow: "0 0 8px rgba(200,243,106,0.6)" }}
                     transition={{ type: "spring", stiffness: 500, damping: 35 }} />
                 )}
-                <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-all duration-200
-                    ${on ? "" : "bg-white/5 group-hover:bg-white/10"}`}
-                  style={on ? { background: `linear-gradient(135deg,${item.from},${item.to})`, boxShadow: `0 0 14px ${item.from}55` } : {}}>
-                  <Icon className={`w-4 h-4 ${on ? "text-white" : "text-gray-500 group-hover:text-gray-200"}`} />
+                <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-all duration-200`}
+                  style={on
+                    ? { background: "rgba(200,243,106,0.15)", border: "1px solid rgba(200,243,106,0.2)" }
+                    : { background: "rgba(255,255,255,0.04)", border: "1px solid transparent" }}>
+                  <Icon className={`w-4 h-4 transition-colors`}
+                    style={{ color: on ? "#C8F36A" : "#5C5E58" }} />
                 </div>
                 <AnimatePresence>
                   {!collapsed && (
                     <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }}
-                      className={`text-sm font-medium ${on ? "text-white" : "text-gray-400 group-hover:text-gray-100"}`}>
+                      className="text-sm font-medium transition-colors"
+                      style={{ color: on ? "#C8F36A" : "#9A9B95" }}>
                       {item.name}
                     </motion.span>
                   )}
@@ -100,23 +111,28 @@ export default function DashboardLayout({ children }) {
       </nav>
 
       {/* User + Logout */}
-      <div className="p-2 border-t border-white/5 space-y-1">
+      <div className="p-2 space-y-1" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
         {!collapsed && user && (
-          <div className="flex items-center gap-3 px-3 py-2 rounded-xl bg-white/5 border border-white/5">
-            <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 text-white text-xs font-bold"
-              style={{ background: "linear-gradient(135deg,#FF2D20,#FF6B35)" }}>
+          <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl mb-1"
+            style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}>
+            <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-black"
+              style={{ background: "rgba(200,243,106,0.15)", border: "1px solid rgba(200,243,106,0.25)", color: "#C8F36A" }}>
               {user.name?.[0] ?? "U"}
             </div>
             <div className="min-w-0">
-              <div className="text-xs font-semibold text-white truncate">{user.name}</div>
-              <div className="text-[10px] text-gray-500 truncate">{user.goal}</div>
+              <div className="text-xs font-semibold truncate" style={{ color: "#F2F0EA" }}>{user.name}</div>
+              <div className="text-[10px] truncate" style={{ color: "#5C5E58" }}>{user.goal}</div>
             </div>
           </div>
         )}
         <motion.button whileHover={{ x: 2 }} whileTap={{ scale: 0.97 }} onClick={logout}
-          className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-red-400 hover:bg-red-500/10 transition-all duration-200 group
-            ${collapsed ? "justify-center" : ""}`}>
-          <div className="w-8 h-8 rounded-lg bg-red-500/10 flex items-center justify-center flex-shrink-0 group-hover:bg-red-500/20 transition-colors">
+          className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group
+            ${collapsed ? "justify-center" : ""}`}
+          style={{ color: "#9A9B95" }}
+          onMouseEnter={e => { e.currentTarget.style.background = "rgba(239,68,68,0.08)"; e.currentTarget.style.color = "#f87171"; }}
+          onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#9A9B95"; }}>
+          <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors"
+            style={{ background: "rgba(255,255,255,0.04)" }}>
             <LogOut className="w-4 h-4" />
           </div>
           <AnimatePresence>
@@ -132,62 +148,68 @@ export default function DashboardLayout({ children }) {
   );
 
   return (
-    <div className="flex h-[100dvh] overflow-hidden" style={{ background: "#050508", color: "#F0F0F5" }}>
+    <div className="flex h-[100dvh] overflow-hidden" style={{ background: "#0E1012", color: "#F2F0EA" }}>
       {/* ───── Desktop Sidebar ───── */}
       <motion.aside
         animate={{ width: collapsed ? 72 : 256 }}
         transition={{ duration: 0.25, ease: "easeInOut" }}
         className="hidden lg:flex flex-col flex-shrink-0 relative overflow-hidden"
-        style={{ background: "#0A0A0F", borderRight: "1px solid rgba(255,255,255,0.06)" }}
+        style={{ background: "#0A0C0E", borderRight: "1px solid rgba(255,255,255,0.06)" }}
       >
         <SidebarInner />
         <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}
           onClick={() => setCollapsed(!collapsed)}
-          className="absolute -right-3 top-20 w-6 h-6 rounded-full flex items-center justify-center z-10 border border-white/10"
-          style={{ background: "#0A0A0F", boxShadow: "0 0 10px rgba(0,0,0,0.5)" }}>
-          {collapsed ? <ChevronRight className="w-3 h-3 text-gray-400" /> : <ChevronLeft className="w-3 h-3 text-gray-400" />}
+          className="absolute -right-3 top-20 w-6 h-6 rounded-full flex items-center justify-center z-10"
+          style={{ background: "#0A0C0E", border: "1px solid rgba(255,255,255,0.1)", boxShadow: "0 0 12px rgba(0,0,0,0.6)" }}>
+          {collapsed ? <ChevronRight className="w-3 h-3" style={{ color: "#5C5E58" }} /> : <ChevronLeft className="w-3 h-3" style={{ color: "#5C5E58" }} />}
         </motion.button>
       </motion.aside>
 
       {/* ───── Main ───── */}
       <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        {/* Top Navbar */}
-        <header className="flex-shrink-0 flex items-center justify-between px-4 sm:px-6 py-2.5 sm:py-3 border-b border-white/5"
-          style={{ background: "rgba(10,10,15,0.8)", backdropFilter: "blur(20px)" }}>
+        {/* Top Header */}
+        <header className="flex-shrink-0 flex items-center justify-between px-4 sm:px-6 py-3 sm:py-3.5"
+          style={{ background: "rgba(10,12,14,0.85)", backdropFilter: "blur(20px)", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
           <div className="flex items-center gap-2 sm:gap-3">
             {/* Mobile logo */}
-            <div className="lg:hidden flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center"
-                style={{ background: "linear-gradient(135deg,#FF2D20,#FF6B35)" }}>
-                <Dumbbell className="w-4 h-4 text-white" />
+            <div className="lg:hidden flex items-center gap-2.5">
+              <div className="w-7 h-7 rounded-lg flex items-center justify-center font-black text-xs"
+                style={{ background: "rgba(200,243,106,0.12)", border: "1px solid rgba(200,243,106,0.25)", color: "#C8F36A" }}>
+                GV
               </div>
-              <span className="text-sm font-black tracking-wider" style={{ background: "linear-gradient(90deg,#FF2D20,#FF6B35)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+              <span className="text-sm font-black tracking-[3px]" style={{ color: "#C8F36A" }}>
                 GYMVERSE
               </span>
             </div>
             {/* Desktop breadcrumb */}
             <div className="hidden lg:block">
-              <div className="text-xs text-gray-500 uppercase tracking-widest">Dashboard</div>
-              <div className="text-sm font-semibold text-white">{pageTitle}</div>
+              <div className="text-[10px] uppercase tracking-[3px]" style={{ color: "#5C5E58" }}>Dashboard</div>
+              <div className="text-sm font-semibold" style={{ color: "#F2F0EA" }}>{pageTitle}</div>
             </div>
           </div>
           <div className="flex items-center gap-2">
             <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
-              className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white relative">
+              className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center relative"
+              style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", color: "#5C5E58" }}>
               <Bell className="w-4 h-4" />
-              <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-red-500" />
+              <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full" style={{ background: "#C8F36A" }} />
             </motion.button>
-            <div className="flex items-center gap-2 px-2 sm:px-3 py-1.5 rounded-xl bg-white/5 border border-white/10">
-              <div className="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold"
-                style={{ background: "linear-gradient(135deg,#FF2D20,#FF6B35)" }}>
+            <button onClick={logout} className="flex items-center gap-2 px-2.5 py-1.5 rounded-xl transition-colors lg:hidden"
+              style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
+              <LogOut className="w-4 h-4" style={{ color: "#9A9B95" }} />
+            </button>
+            <div className="hidden lg:flex items-center gap-2 px-2.5 py-1.5 rounded-xl"
+              style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
+              <div className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-black"
+                style={{ background: "rgba(200,243,106,0.15)", border: "1px solid rgba(200,243,106,0.2)", color: "#C8F36A" }}>
                 {user?.name?.[0] ?? "U"}
               </div>
-              <span className="text-xs sm:text-sm text-gray-300 hidden sm:block">{user?.name?.split(" ")[0] ?? "User"}</span>
+              <span className="text-xs sm:text-sm" style={{ color: "#9A9B95" }}>{user?.name?.split(" ")[0] ?? "User"}</span>
             </div>
           </div>
         </header>
 
-        {/* Content — extra bottom padding on mobile for bottom nav */}
+        {/* Content */}
         <div className="flex-1 overflow-y-auto" style={{ WebkitOverflowScrolling: "touch" }}>
           <motion.div
             key={pathname}
@@ -203,7 +225,7 @@ export default function DashboardLayout({ children }) {
 
       {/* ───── Mobile Bottom Nav ───── */}
       <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50"
-        style={{ background: "rgba(10,10,15,0.92)", backdropFilter: "blur(24px) saturate(180%)", borderTop: "1px solid rgba(255,255,255,0.06)", paddingBottom: "env(safe-area-inset-bottom, 0px)" }}>
+        style={{ background: "rgba(10,12,14,0.95)", backdropFilter: "blur(24px) saturate(180%)", borderTop: "1px solid rgba(255,255,255,0.06)", paddingBottom: "env(safe-area-inset-bottom, 0px)" }}>
         <div className="flex items-center justify-around px-2 py-1.5">
           {NAV.map((item) => {
             const on = active(item.href);
@@ -218,18 +240,17 @@ export default function DashboardLayout({ children }) {
                     <motion.div
                       layoutId="mobile-pill"
                       className="absolute -top-1.5 w-6 h-[3px] rounded-full"
-                      style={{ background: `linear-gradient(90deg,${item.from},${item.to})`, boxShadow: `0 0 10px ${item.from}88` }}
+                      style={{ background: "#C8F36A", boxShadow: "0 0 8px rgba(200,243,106,0.7)" }}
                       transition={{ type: "spring", stiffness: 500, damping: 35 }}
                     />
                   )}
-                  <div className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-200
-                    ${on ? "" : "bg-transparent"}`}
-                    style={on ? { background: `linear-gradient(135deg,${item.from}22,${item.to}11)` } : {}}>
+                  <div className="w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-200"
+                    style={on ? { background: "rgba(200,243,106,0.1)" } : {}}>
                     <Icon className="w-5 h-5 transition-colors duration-200"
-                      style={{ color: on ? item.from : "#4B5563" }} />
+                      style={{ color: on ? "#C8F36A" : "#5C5E58" }} />
                   </div>
-                  <span className={`text-[10px] font-semibold mt-0.5 transition-colors duration-200
-                    ${on ? "text-white" : "text-gray-600"}`}>
+                  <span className="text-[10px] font-semibold mt-0.5 transition-colors duration-200"
+                    style={{ color: on ? "#C8F36A" : "#5C5E58" }}>
                     {item.name}
                   </span>
                 </motion.div>

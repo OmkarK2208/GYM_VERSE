@@ -16,11 +16,11 @@ export async function POST() {
   if (waterLog) {
     await prisma.waterLog.update({
       where: { id: waterLog.id },
-      data: { glasses: waterLog.glasses + 1 }
+      data: { amount: waterLog.amount + 0.5 }
     });
   } else {
     await prisma.waterLog.create({
-      data: { userId: session.userId, glasses: 1 }
+      data: { userId: session.userId, amount: 0.5 }
     });
   }
 

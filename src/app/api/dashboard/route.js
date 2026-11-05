@@ -86,7 +86,7 @@ export async function GET() {
     prOfTheDay,
     bmi: bmi ? bmi.toFixed(1) : null,
     bmiCategory,
-    waterGlasses: waterLog ? waterLog.glasses : 0,
+    waterAmount: waterLog ? waterLog.amount : 0,
     streak,
     workoutsCount: todaysWorkouts.length
   });

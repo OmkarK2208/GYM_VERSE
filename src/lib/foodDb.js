@@ -23,6 +23,7 @@ const FOODS = {
   "poha": [130, 3], "upma": [150, 4], "idli": [39, 2], "dosa": [168, 4], "utthappa": [180, 4], "uttapam": [180, 4],
   "dal": [116, 9], "lentils": [116, 9], "rajma": [127, 9], "chole": [164, 9],
   "moong dal": [105, 7], "toor dal": [120, 8], "khichdi": [115, 5], "khichadi": [115, 5],
+  "matki": [343, 24], "moth beans": [343, 24],
 
   // Fruits
   "banana": [89, 1], "apple": [52, 0], "mango": [60, 1], "orange": [47, 1],
