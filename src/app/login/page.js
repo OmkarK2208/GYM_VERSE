@@ -2,7 +2,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Dumbbell } from "lucide-react";
+import { Dumbbell, ArrowRight, ShieldCheck, KeyRound, Mail, Sparkles } from "lucide-react";
+import { GymUniverseCanvas } from "@/components/3d/GymUniverseCanvas";
 
 export default function Login() {
   const router = useRouter();
@@ -64,187 +65,104 @@ export default function Login() {
   };
 
   const inputClass =
-    "w-full rounded-xl px-4 py-3.5 text-sm outline-none transition-all duration-200 " +
-    "placeholder:text-[#5C5E58]";
-
-  const inputStyle = {
-    background: "#1A1D20",
-    border: "1px solid rgba(255,255,255,0.08)",
-    color: "#F2F0EA",
-  };
-
-  const inputFocusStyle = {
-    borderColor: "rgba(200,243,106,0.5)",
-    boxShadow: "0 0 0 3px rgba(200,243,106,0.08)",
-  };
+    "w-full rounded-xl px-4 py-3.5 text-white placeholder-stone-500 text-sm outline-none bg-dark-900/80 border border-white/10 focus:border-lime focus:ring-1 focus:ring-lime transition-all";
 
   return (
-    <div
-      className="min-h-[100dvh] flex items-center justify-center px-4 py-10 relative overflow-hidden"
-      style={{ background: "#0E1012" }}
-    >
-      {/* ── Animated background blobs ── */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
-        <div
-          className="absolute -top-32 -left-32 w-[480px] h-[480px] rounded-full opacity-[0.07] animate-blob"
-          style={{
-            background: "radial-gradient(circle, #C8F36A, transparent 70%)",
-            filter: "blur(80px)",
-          }}
-        />
-        <div
-          className="absolute -bottom-40 -right-40 w-[400px] h-[400px] rounded-full opacity-[0.05] animate-blob-slow"
-          style={{
-            background: "radial-gradient(circle, #566B39, transparent 70%)",
-            filter: "blur(100px)",
-            animationDelay: "4s",
-          }}
-        />
-        {/* particles */}
-        {[
-          { size: 3, top: "15%", left: "10%", delay: "0s",   dur: "7s" },
-          { size: 2, top: "75%", left: "85%", delay: "1.5s", dur: "9s" },
-          { size: 2, top: "50%", left: "5%",  delay: "3s",   dur: "6s" },
-          { size: 3, top: "30%", left: "90%", delay: "2s",   dur: "8s" },
-        ].map((p, i) => (
-          <div
-            key={i}
-            className="particle"
-            style={{
-              width: p.size,
-              height: p.size,
-              top: p.top,
-              left: p.left,
-              animationDelay: p.delay,
-              animationDuration: p.dur,
-            }}
-          />
-        ))}
-      </div>
+    <div className="relative min-h-[100dvh] flex items-center justify-center px-4 py-12 bg-dark-950 overflow-hidden">
+      {/* Interactive 3D Canvas Background */}
+      <GymUniverseCanvas density={35} interactive={true} />
 
-      {/* ── Card ── */}
-      <div
-        className="relative w-full max-w-sm rounded-3xl p-7 sm:p-9"
-        style={{
-          background: "rgba(20,22,24,0.85)",
-          border: "1px solid rgba(255,255,255,0.08)",
-          backdropFilter: "blur(24px)",
-          WebkitBackdropFilter: "blur(24px)",
-          boxShadow: "0 24px 80px rgba(0,0,0,0.6)",
-        }}
-      >
-        {/* ── Brand ── */}
+      {/* Atmospheric Glow */}
+      <div className="pointer-events-none fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-radial-gradient from-lime/10 to-transparent blur-3xl opacity-60" />
+
+      {/* Card Container */}
+      <div className="relative z-10 w-full max-w-md rounded-3xl p-8 glass-panel border border-white/10 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] backdrop-blur-2xl">
+        {/* Brand / Logo */}
         <div className="text-center mb-8">
-          <div
-            className="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center animate-pulse-glow"
-            style={{
-              background: "linear-gradient(135deg, #C8F36A, #8BB840)",
-              boxShadow: "0 0 32px rgba(200,243,106,0.35)",
-            }}
-          >
-            <Dumbbell className="w-8 h-8" style={{ color: "#0E1012" }} />
+          <Link href="/" className="inline-block group">
+            <div className="w-14 h-14 rounded-2xl mx-auto mb-4 flex items-center justify-center bg-gradient-to-br from-lime to-olive shadow-[0_0_25px_rgba(200,243,106,0.35)] transition-transform group-hover:scale-105">
+              <Dumbbell className="w-7 h-7 text-dark-950" />
+            </div>
+          </Link>
+          <div className="text-xs uppercase tracking-[4px] text-lime font-mono font-bold mb-1">
+            ACCESS PORTAL
           </div>
-          <span
-            className="block text-sm font-black tracking-[0.3em] mb-3"
-            style={{
-              background: "linear-gradient(90deg, #C8F36A, #A8D94A)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
+          <h1 className="text-3xl font-black text-white tracking-tight">Enter GYMVERSE</h1>
+          <p className="text-stone-400 text-xs mt-1">Authenticate to synchronize your 3D training universe</p>
+        </div>
+
+        {/* Toggle Login Method — Squarespace Segmented Control */}
+        <div className="flex p-1 mb-6 rounded-xl bg-dark-950/80 border border-white/5">
+          <button
+            type="button"
+            onClick={() => {
+              setLoginMethod("password");
+              setOtpSent(false);
+              setError("");
             }}
+            className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${
+              loginMethod === "password"
+                ? "bg-white/15 text-white shadow-sm"
+                : "text-stone-400 hover:text-white"
+            }`}
           >
-            GYMVERSE
-          </span>
-          <h1 className="text-2xl sm:text-3xl font-black" style={{ color: "#F2F0EA", marginBottom: "0.25rem" }}>
-            Welcome Back
-          </h1>
-          <p className="text-sm" style={{ color: "#5C5E58" }}>
-            Sign in to track your progress
-          </p>
+            Password
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setLoginMethod("otp");
+              setError("");
+            }}
+            className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${
+              loginMethod === "otp"
+                ? "bg-white/15 text-white shadow-sm"
+                : "text-stone-400 hover:text-white"
+            }`}
+          >
+            One-Time Password
+          </button>
         </div>
 
-        {/* ── Method toggle ── */}
-        <div
-          className="flex p-1 mb-6 rounded-xl gap-1"
-          style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}
-        >
-          {["password", "otp"].map((m) => (
-            <button
-              key={m}
-              type="button"
-              onClick={() => { setLoginMethod(m); setOtpSent(false); setError(""); }}
-              className="flex-1 py-2 text-sm font-semibold rounded-lg transition-all capitalize"
-              style={
-                loginMethod === m
-                  ? {
-                      background: "linear-gradient(135deg, #C8F36A, #A8D94A)",
-                      color: "#0E1012",
-                      boxShadow: "0 2px 8px rgba(200,243,106,0.25)",
-                    }
-                  : { color: "#5C5E58" }
-              }
-            >
-              {m === "otp" ? "OTP" : "Password"}
-            </button>
-          ))}
-        </div>
-
-        {/* ── Error / info banner ── */}
         {error && (
           <div
-            className="rounded-xl px-4 py-3 mb-5 text-sm font-medium text-center"
-            style={
-              error.includes("OTP sent") || error.includes("Verified")
-                ? { background: "rgba(200,243,106,0.08)", border: "1px solid rgba(200,243,106,0.2)", color: "#C8F36A" }
-                : { background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.2)", color: "#f87171" }
-            }
+            className={`rounded-xl px-4 py-3 mb-5 text-xs font-semibold text-center border ${
+              error.includes("sent") || error.includes("Verified")
+                ? "text-emerald-400 bg-emerald-500/10 border-emerald-500/20"
+                : "text-rose-400 bg-rose-500/10 border-rose-500/20"
+            }`}
           >
             {error}
           </div>
         )}
 
-        {/* ── Form ── */}
         <form onSubmit={handleLogin} className="space-y-4">
-          {/* Email */}
           <div>
-            <label
-              className="block text-xs uppercase tracking-widest mb-1.5 font-semibold"
-              style={{ color: "#5C5E58" }}
-              htmlFor="email"
-            >
-              Email
+            <label className="block text-[11px] uppercase tracking-widest text-stone-400 font-semibold mb-2" htmlFor="email">
+              Athlete Email Address
             </label>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@email.com"
-              required
-              disabled={otpSent}
-              className={inputClass}
-              style={inputStyle}
-              onFocus={(e) => Object.assign(e.target.style, { ...inputStyle, ...inputFocusStyle })}
-              onBlur={(e) => Object.assign(e.target.style, inputStyle)}
-            />
+            <div className="relative">
+              <input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="athlete@gymverse.com"
+                required
+                disabled={otpSent}
+                className={inputClass}
+              />
+            </div>
           </div>
 
-          {/* Password */}
           {loginMethod === "password" && (
             <div>
-              <div className="flex items-center justify-between mb-1.5">
-                <label
-                  className="text-xs uppercase tracking-widest font-semibold"
-                  style={{ color: "#5C5E58" }}
-                  htmlFor="password"
-                >
-                  Password
+              <div className="flex items-center justify-between mb-2">
+                <label className="block text-[11px] uppercase tracking-widest text-stone-400 font-semibold" htmlFor="password">
+                  Security Password
                 </label>
-                <Link
-                  href="/forgot-password"
-                  className="text-xs font-medium transition-colors"
-                  style={{ color: "#C8F36A" }}
-                >
-                  Forgot password?
+                <Link href="/forgot-password" className="text-xs text-lime hover:underline transition-colors font-medium">
+                  Forgot?
                 </Link>
               </div>
               <input
@@ -252,34 +170,25 @@ export default function Login() {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
+                placeholder="••••••••••••"
                 required
                 className={inputClass}
-                style={inputStyle}
-                onFocus={(e) => Object.assign(e.target.style, { ...inputStyle, ...inputFocusStyle })}
-                onBlur={(e) => Object.assign(e.target.style, inputStyle)}
               />
             </div>
           )}
 
-          {/* OTP */}
           {loginMethod === "otp" && otpSent && (
             <div>
-              <div className="flex items-center justify-between mb-1.5">
-                <label
-                  className="text-xs uppercase tracking-widest font-semibold"
-                  style={{ color: "#5C5E58" }}
-                  htmlFor="otp"
-                >
-                  One-Time Password
+              <div className="flex items-center justify-between mb-2">
+                <label className="block text-[11px] uppercase tracking-widest text-stone-400 font-semibold" htmlFor="otp">
+                  Enter 4-Digit Code
                 </label>
                 <button
                   type="button"
                   onClick={() => setOtpSent(false)}
-                  className="text-xs font-medium"
-                  style={{ color: "#C8F36A", background: "none", padding: 0, border: "none" }}
+                  className="text-xs text-lime hover:underline"
                 >
-                  Edit Email
+                  Change Email
                 </button>
               </div>
               <input
@@ -287,58 +196,39 @@ export default function Login() {
                 type="text"
                 value={otp}
                 onChange={(e) => setOtp(e.target.value)}
-                placeholder="Enter 4-digit OTP"
+                placeholder="0 0 0 0"
                 required
+                className={`${inputClass} text-center tracking-[12px] font-mono text-lg font-bold`}
                 maxLength={4}
-                className={inputClass}
-                style={{ ...inputStyle, letterSpacing: "0.3em", textAlign: "center", fontSize: "1.25rem" }}
-                onFocus={(e) => Object.assign(e.target.style, { ...inputStyle, ...inputFocusStyle, letterSpacing: "0.3em", textAlign: "center", fontSize: "1.25rem" })}
-                onBlur={(e) => Object.assign(e.target.style, { ...inputStyle, letterSpacing: "0.3em", textAlign: "center", fontSize: "1.25rem" })}
               />
             </div>
           )}
 
-          {/* Submit */}
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-4 rounded-xl text-sm font-black tracking-wide transition-all active:scale-95 disabled:opacity-50 mt-2 relative overflow-hidden"
-            style={{
-              background: "linear-gradient(135deg, #C8F36A, #A8D94A)",
-              color: "#0E1012",
-              boxShadow: loading ? "none" : "0 0 28px rgba(200,243,106,0.35)",
-            }}
+            className="w-full py-4 rounded-xl text-sm font-black text-dark-950 bg-lime hover:bg-lime-hover transition-all active:scale-98 disabled:opacity-50 mt-4 shadow-[0_0_25px_rgba(200,243,106,0.35)] flex items-center justify-center gap-2"
           >
-            {/* Shimmer overlay */}
-            {!loading && (
-              <span
-                className="absolute inset-0 animate-shimmer pointer-events-none"
-                style={{
-                  background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent)",
-                  width: "60%",
-                }}
-              />
-            )}
+            {loading ? (
+              <span className="inline-block animate-spin mr-2">⟳</span>
+            ) : null}
             {loading
-              ? "Processing…"
+              ? "Connecting..."
               : loginMethod === "otp"
               ? otpSent
-                ? "Verify OTP"
-                : "Send OTP"
-              : "Sign In"}
+                ? "Verify & Enter Dashboard"
+                : "Generate One-Time Code"
+              : "Launch Dashboard"}
+            {!loading && <ArrowRight className="h-4 w-4" />}
           </button>
         </form>
 
-        <p className="text-center mt-6 text-sm" style={{ color: "#5C5E58" }}>
-          Don&apos;t have an account?{" "}
-          <Link
-            href="/register"
-            className="font-bold transition-colors"
-            style={{ color: "#C8F36A" }}
-          >
-            Register
+        <div className="mt-8 pt-6 border-t border-white/5 text-center text-xs text-stone-400">
+          New to the universe?{" "}
+          <Link href="/register" className="font-bold text-lime hover:underline ml-1">
+            Create Athlete Profile →
           </Link>
-        </p>
+        </div>
       </div>
     </div>
   );

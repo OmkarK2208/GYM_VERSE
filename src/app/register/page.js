@@ -2,12 +2,20 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Dumbbell, TrendingUp, Zap, Minus } from "lucide-react";
+import { Dumbbell, ArrowRight, Target, Sparkles, User, Mail, Lock, Ruler, Weight } from "lucide-react";
+import { GymUniverseCanvas } from "@/components/3d/GymUniverseCanvas";
 
 export default function Register() {
   const router = useRouter();
   const [formData, setFormData] = useState({
-    name: "", email: "", password: "", age: "", gender: "", height: "", weight: "", goal: "Maintain"
+    name: "",
+    email: "",
+    password: "",
+    age: "",
+    gender: "",
+    height: "",
+    weight: "",
+    goal: "Maintain",
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -35,315 +43,182 @@ export default function Register() {
     }
   };
 
-  const inputStyle = {
-    background: "#1A1D20",
-    border: "1px solid rgba(255,255,255,0.08)",
-    color: "#F2F0EA",
-  };
-  const inputFocusStyle = {
-    borderColor: "rgba(200,243,106,0.5)",
-    boxShadow: "0 0 0 3px rgba(200,243,106,0.08)",
-    outline: "none",
-  };
   const inputClass =
-    "w-full rounded-xl px-4 py-3 text-sm transition-all duration-200 placeholder:text-[#5C5E58]";
-  const labelClass =
-    "block text-xs uppercase tracking-widest mb-1.5 font-semibold";
-
-  const goals = [
-    { value: "Maintain", label: "Maintain",  icon: Minus,       desc: "Stay at current weight" },
-    { value: "Bulk",     label: "Bulk",       icon: TrendingUp,  desc: "Build muscle & mass" },
-    { value: "Cut",      label: "Cut",        icon: Zap,         desc: "Burn fat & lean out" },
-  ];
+    "w-full rounded-xl px-4 py-3 text-white placeholder-stone-500 text-sm outline-none bg-dark-900/80 border border-white/10 focus:border-lime focus:ring-1 focus:ring-lime transition-all";
+  const labelClass = "block text-[11px] uppercase tracking-widest text-stone-400 font-semibold mb-1.5";
 
   return (
-    <div
-      className="min-h-[100dvh] flex items-center justify-center px-4 py-10 relative overflow-hidden"
-      style={{ background: "#0E1012" }}
-    >
-      {/* ── Animated background blobs ── */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
-        <div
-          className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full opacity-[0.07] animate-blob"
-          style={{
-            background: "radial-gradient(circle, #C8F36A, transparent 70%)",
-            filter: "blur(90px)",
-          }}
-        />
-        <div
-          className="absolute -bottom-32 -left-32 w-[380px] h-[380px] rounded-full opacity-[0.05] animate-blob-slow"
-          style={{
-            background: "radial-gradient(circle, #566B39, transparent 70%)",
-            filter: "blur(80px)",
-            animationDelay: "5s",
-          }}
-        />
-        {[
-          { size: 3, top: "10%", left: "5%",  delay: "0s",   dur: "7s" },
-          { size: 2, top: "80%", left: "90%", delay: "2s",   dur: "9s" },
-          { size: 2, top: "45%", left: "95%", delay: "1s",   dur: "6s" },
-          { size: 3, top: "65%", left: "3%",  delay: "3.5s", dur: "8s" },
-        ].map((p, i) => (
-          <div
-            key={i}
-            className="particle"
-            style={{
-              width: p.size, height: p.size,
-              top: p.top, left: p.left,
-              animationDelay: p.delay, animationDuration: p.dur,
-            }}
-          />
-        ))}
-      </div>
+    <div className="relative min-h-[100dvh] flex items-center justify-center px-4 py-12 bg-dark-950 overflow-hidden">
+      {/* Interactive 3D Canvas Background */}
+      <GymUniverseCanvas density={35} interactive={true} />
 
-      {/* ── Card ── */}
-      <div
-        className="relative w-full max-w-lg rounded-3xl p-7 sm:p-9"
-        style={{
-          background: "rgba(20,22,24,0.85)",
-          border: "1px solid rgba(255,255,255,0.08)",
-          backdropFilter: "blur(24px)",
-          WebkitBackdropFilter: "blur(24px)",
-          boxShadow: "0 24px 80px rgba(0,0,0,0.6)",
-        }}
-      >
-        {/* ── Brand ── */}
-        <div className="text-center mb-8">
-          <div
-            className="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center animate-pulse-glow"
-            style={{
-              background: "linear-gradient(135deg, #C8F36A, #8BB840)",
-              boxShadow: "0 0 32px rgba(200,243,106,0.35)",
-            }}
-          >
-            <Dumbbell className="w-8 h-8" style={{ color: "#0E1012" }} />
+      {/* Atmospheric Glow */}
+      <div className="pointer-events-none fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-radial-gradient from-lime/10 to-transparent blur-3xl opacity-60" />
+
+      {/* Main Card */}
+      <div className="relative z-10 w-full max-w-xl rounded-3xl p-6 sm:p-10 glass-panel border border-white/10 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] backdrop-blur-2xl">
+        {/* Brand */}
+        <div className="text-center mb-6">
+          <Link href="/" className="inline-block group">
+            <div className="w-14 h-14 rounded-2xl mx-auto mb-3 flex items-center justify-center bg-gradient-to-br from-lime to-olive shadow-[0_0_25px_rgba(200,243,106,0.35)] transition-transform group-hover:scale-105">
+              <Dumbbell className="w-7 h-7 text-dark-950" />
+            </div>
+          </Link>
+          <div className="text-xs uppercase tracking-[4px] text-lime font-mono font-bold mb-1">
+            ONBOARDING PROTOCOL
           </div>
-          <span
-            className="block text-sm font-black tracking-[0.3em] mb-3"
-            style={{
-              background: "linear-gradient(90deg, #C8F36A, #A8D94A)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}
-          >
-            GYMVERSE
-          </span>
-          <h1 className="text-2xl sm:text-3xl font-black" style={{ color: "#F2F0EA", marginBottom: "0.25rem" }}>
-            Join GYMVERSE
-          </h1>
-          <p className="text-sm" style={{ color: "#5C5E58" }}>
-            Start your fitness journey today
-          </p>
+          <h1 className="text-3xl font-black text-white tracking-tight">Create Athlete Profile</h1>
+          <p className="text-stone-400 text-xs mt-1">Calibrate your physical metrics for precision 3D tracking</p>
         </div>
 
-        {/* ── Error banner ── */}
         {error && (
-          <div
-            className="rounded-xl px-4 py-3 mb-5 text-sm font-medium text-center"
-            style={{
-              background: "rgba(239,68,68,0.08)",
-              border: "1px solid rgba(239,68,68,0.2)",
-              color: "#f87171",
-            }}
-          >
+          <div className="rounded-xl px-4 py-3 mb-6 text-xs font-semibold text-rose-400 bg-rose-500/10 border border-rose-500/20 text-center">
             {error}
           </div>
         )}
 
-        <form onSubmit={handleRegister} className="space-y-5">
-
-          {/* ── Section: Personal Info ── */}
-          <div>
-            <p
-              className="text-xs font-bold tracking-widest uppercase mb-3"
-              style={{ color: "#C8F36A" }}
-            >
-              Personal Info
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className={labelClass} style={{ color: "#5C5E58" }} htmlFor="name">
-                  Full Name *
-                </label>
-                <input
-                  id="name" type="text" value={formData.name} onChange={handleChange}
-                  required placeholder="John Doe" className={inputClass} style={inputStyle}
-                  onFocus={(e) => Object.assign(e.target.style, { ...inputStyle, ...inputFocusStyle })}
-                  onBlur={(e) => Object.assign(e.target.style, inputStyle)}
-                />
-              </div>
-              <div>
-                <label className={labelClass} style={{ color: "#5C5E58" }} htmlFor="email">
-                  Email *
-                </label>
-                <input
-                  id="email" type="email" value={formData.email} onChange={handleChange}
-                  required placeholder="you@email.com" className={inputClass} style={inputStyle}
-                  onFocus={(e) => Object.assign(e.target.style, { ...inputStyle, ...inputFocusStyle })}
-                  onBlur={(e) => Object.assign(e.target.style, inputStyle)}
-                />
-              </div>
-            </div>
+        <form onSubmit={handleRegister} className="space-y-4">
+          {/* Personal Info Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className={labelClass} style={{ color: "#5C5E58" }} htmlFor="password">
-                Password *
+              <label className={labelClass} htmlFor="name">
+                Full Name *
               </label>
               <input
-                id="password" type="password" value={formData.password} onChange={handleChange}
-                required placeholder="••••••••" className={inputClass} style={inputStyle}
-                onFocus={(e) => Object.assign(e.target.style, { ...inputStyle, ...inputFocusStyle })}
-                onBlur={(e) => Object.assign(e.target.style, inputStyle)}
+                id="name"
+                type="text"
+                value={formData.name}
+                onChange={handleChange}
+                required
+                placeholder="Marcus Aurelius"
+                className={inputClass}
+              />
+            </div>
+            <div>
+              <label className={labelClass} htmlFor="email">
+                Email Address *
+              </label>
+              <input
+                id="email"
+                type="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+                placeholder="athlete@gymverse.com"
+                className={inputClass}
               />
             </div>
           </div>
 
-          {/* ── Divider ── */}
-          <div style={{ height: "1px", background: "rgba(255,255,255,0.06)" }} />
-
-          {/* ── Section: Body Stats ── */}
           <div>
-            <p
-              className="text-xs font-bold tracking-widest uppercase mb-3"
-              style={{ color: "#C8F36A" }}
-            >
-              Body Stats
-            </p>
-            <div className="grid grid-cols-3 gap-3">
-              <div>
-                <label className={labelClass} style={{ color: "#5C5E58" }} htmlFor="age">Age</label>
-                <input
-                  id="age" type="number" min="10" max="120" value={formData.age} onChange={handleChange}
-                  placeholder="25" className={inputClass} style={inputStyle}
-                  onFocus={(e) => Object.assign(e.target.style, { ...inputStyle, ...inputFocusStyle })}
-                  onBlur={(e) => Object.assign(e.target.style, inputStyle)}
-                />
-              </div>
-              <div>
-                <label className={labelClass} style={{ color: "#5C5E58" }} htmlFor="height">Height (cm)</label>
-                <input
-                  id="height" type="number" step="0.1" value={formData.height} onChange={handleChange}
-                  placeholder="175" className={inputClass} style={inputStyle}
-                  onFocus={(e) => Object.assign(e.target.style, { ...inputStyle, ...inputFocusStyle })}
-                  onBlur={(e) => Object.assign(e.target.style, inputStyle)}
-                />
-              </div>
-              <div>
-                <label className={labelClass} style={{ color: "#5C5E58" }} htmlFor="weight">Weight (kg)</label>
-                <input
-                  id="weight" type="number" step="0.1" value={formData.weight} onChange={handleChange}
-                  placeholder="75" className={inputClass} style={inputStyle}
-                  onFocus={(e) => Object.assign(e.target.style, { ...inputStyle, ...inputFocusStyle })}
-                  onBlur={(e) => Object.assign(e.target.style, inputStyle)}
-                />
-              </div>
+            <label className={labelClass} htmlFor="password">
+              Security Password *
+            </label>
+            <input
+              id="password"
+              type="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+              placeholder="••••••••••••"
+              className={inputClass}
+            />
+          </div>
+
+          {/* Goal Selector Cards */}
+          <div>
+            <label className={labelClass}>Fitness Objective *</label>
+            <div className="grid grid-cols-3 gap-2">
+              {["Maintain", "Bulk", "Cut"].map((g) => (
+                <button
+                  key={g}
+                  type="button"
+                  onClick={() => setFormData({ ...formData, goal: g })}
+                  className={`py-3 px-2 rounded-xl text-xs font-bold transition-all border ${
+                    formData.goal === g
+                      ? "bg-lime text-dark-950 border-lime shadow-[0_0_15px_rgba(200,243,106,0.3)]"
+                      : "bg-dark-900/80 text-stone-300 border-white/10 hover:border-white/20"
+                  }`}
+                >
+                  {g}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Body Stats Row */}
+          <div className="grid grid-cols-3 gap-3">
+            <div>
+              <label className={labelClass} htmlFor="age">
+                Age
+              </label>
+              <input
+                id="age"
+                type="number"
+                min="10"
+                max="120"
+                value={formData.age}
+                onChange={handleChange}
+                placeholder="25"
+                className={inputClass}
+              />
             </div>
             <div>
-              <label className={labelClass} style={{ color: "#5C5E58" }} htmlFor="gender">Gender</label>
-              <select
-                id="gender" value={formData.gender} onChange={handleChange}
-                className={inputClass}
-                style={{ ...inputStyle, cursor: "pointer" }}
-                onFocus={(e) => Object.assign(e.target.style, { ...inputStyle, ...inputFocusStyle, cursor: "pointer" })}
-                onBlur={(e) => Object.assign(e.target.style, { ...inputStyle, cursor: "pointer" })}
-              >
-                <option value="" style={{ background: "#1A1D20" }}>Select gender</option>
-                <option value="Male" style={{ background: "#1A1D20" }}>Male</option>
-                <option value="Female" style={{ background: "#1A1D20" }}>Female</option>
-                <option value="Other" style={{ background: "#1A1D20" }}>Other</option>
+              <label className={labelClass} htmlFor="gender">
+                Gender
+              </label>
+              <select id="gender" value={formData.gender} onChange={handleChange} className={inputClass}>
+                <option value="">Select</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
               </select>
             </div>
-          </div>
-
-          {/* ── Divider ── */}
-          <div style={{ height: "1px", background: "rgba(255,255,255,0.06)" }} />
-
-          {/* ── Section: Fitness Goal (visual cards) ── */}
-          <div>
-            <p
-              className="text-xs font-bold tracking-widest uppercase mb-3"
-              style={{ color: "#C8F36A" }}
-            >
-              Fitness Goal
-            </p>
-            {/* Hidden input so handleChange / formData.goal still works */}
-            <input type="hidden" id="goal" value={formData.goal} onChange={handleChange} />
-
-            <div className="grid grid-cols-3 gap-3">
-              {goals.map(({ value, label, icon: Icon, desc }) => {
-                const active = formData.goal === value;
-                return (
-                  <button
-                    key={value}
-                    type="button"
-                    onClick={() => setFormData({ ...formData, goal: value })}
-                    className="flex flex-col items-center gap-1.5 py-4 px-2 rounded-2xl transition-all duration-200 text-center active:scale-95"
-                    style={
-                      active
-                        ? {
-                            background: "rgba(200,243,106,0.1)",
-                            border: "1px solid rgba(200,243,106,0.4)",
-                            boxShadow: "0 0 16px rgba(200,243,106,0.1)",
-                          }
-                        : {
-                            background: "rgba(255,255,255,0.03)",
-                            border: "1px solid rgba(255,255,255,0.08)",
-                          }
-                    }
-                  >
-                    <Icon
-                      className="h-5 w-5"
-                      style={{ color: active ? "#C8F36A" : "#5C5E58" }}
-                    />
-                    <span
-                      className="text-sm font-bold"
-                      style={{ color: active ? "#C8F36A" : "#9A9B95" }}
-                    >
-                      {label}
-                    </span>
-                    <span
-                      className="text-xs leading-tight"
-                      style={{ color: active ? "#9A9B95" : "#5C5E58" }}
-                    >
-                      {desc}
-                    </span>
-                  </button>
-                );
-              })}
+            <div>
+              <label className={labelClass} htmlFor="height">
+                Height (cm)
+              </label>
+              <input
+                id="height"
+                type="number"
+                step="0.1"
+                value={formData.height}
+                onChange={handleChange}
+                placeholder="178"
+                className={inputClass}
+              />
             </div>
           </div>
 
-          {/* ── Submit ── */}
+          <div>
+            <label className={labelClass} htmlFor="weight">
+              Current Weight (kg)
+            </label>
+            <input
+              id="weight"
+              type="number"
+              step="0.1"
+              value={formData.weight}
+              onChange={handleChange}
+              placeholder="76.5"
+              className={inputClass}
+            />
+          </div>
+
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-4 rounded-xl text-sm font-black tracking-wide transition-all active:scale-95 disabled:opacity-50 mt-2 relative overflow-hidden"
-            style={{
-              background: "linear-gradient(135deg, #C8F36A, #A8D94A)",
-              color: "#0E1012",
-              boxShadow: loading ? "none" : "0 0 28px rgba(200,243,106,0.35)",
-            }}
+            className="w-full py-4 rounded-xl text-sm font-black text-dark-950 bg-lime hover:bg-lime-hover transition-all active:scale-98 disabled:opacity-50 mt-4 shadow-[0_0_25px_rgba(200,243,106,0.35)] flex items-center justify-center gap-2"
           >
-            {!loading && (
-              <span
-                className="absolute inset-0 animate-shimmer pointer-events-none"
-                style={{
-                  background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent)",
-                  width: "60%",
-                }}
-              />
-            )}
-            {loading ? "Creating Account…" : "Create Account 🚀"}
+            {loading ? "Generating Account..." : "Initialize 3D Gym Profile"}
+            <ArrowRight className="h-4 w-4" />
           </button>
         </form>
 
-        <p className="text-center mt-6 text-sm" style={{ color: "#5C5E58" }}>
-          Already have an account?{" "}
-          <Link
-            href="/login"
-            className="font-bold transition-colors"
-            style={{ color: "#C8F36A" }}
-          >
-            Sign In
+        <p className="text-center mt-6 text-xs text-stone-400">
+          Already registered?{" "}
+          <Link href="/login" className="font-bold text-lime hover:underline ml-1">
+            Sign In Here
           </Link>
         </p>
       </div>
