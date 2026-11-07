@@ -11,7 +11,6 @@ export async function POST(req) {
 
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) {
-      // For security, don't reveal if the user exists or not, but for testing we can return an error
       return NextResponse.json({ error: 'No account found with this email' }, { status: 404 });
     }
 
@@ -26,15 +25,17 @@ export async function POST(req) {
       data: { otp, otpExpiry }
     });
 
-    // We don't have an email provider (like Resend) configured yet.
-    // Instead of sending an email, we output the OTP to the server console for testing.
     console.log(`\n================================`);
     console.log(`🔑 DEVELOPMENT OTP CODE`);
     console.log(`Email: ${email}`);
     console.log(`OTP:   ${otp}`);
     console.log(`================================\n`);
 
-    return NextResponse.json({ success: true, message: 'OTP sent successfully' }, { status: 200 });
+    return NextResponse.json({
+      success: true,
+      message: `Your OTP is: ${otp}`,
+      otp
+    }, { status: 200 });
   } catch (error) {
     console.error('OTP Generation Error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });

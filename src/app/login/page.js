@@ -32,7 +32,7 @@ export default function Login() {
         if (!res.ok) throw new Error(data.error || "Failed to send OTP");
 
         setOtpSent(true);
-        setError("OTP sent to your email (or terminal for dev)");
+        setError(data.message || "OTP generated successfully");
       } catch (err) {
         setError(err.message);
       } finally {
