@@ -24,7 +24,7 @@ export async function POST(req) {
       if (!user.otpExpiry || new Date() > user.otpExpiry) {
         return NextResponse.json({ error: 'OTP has expired' }, { status: 401 });
       }
-      
+
       // Clear OTP upon successful login
       await prisma.user.update({
         where: { id: user.id },
@@ -43,6 +43,10 @@ export async function POST(req) {
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (error) {
     console.error('Login Error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    const isDb = error?.message?.toLowerCase().includes('database') || error?.code === 'P1001';
+    return NextResponse.json(
+      { error: isDb ? 'Database connection waking up, please retry in 5 seconds.' : 'Internal server error' },
+      { status: 500 }
+    );
   }
 }
