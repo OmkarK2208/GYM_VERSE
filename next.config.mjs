@@ -7,6 +7,7 @@ const nextConfig = {
     '10.79.200.43',
     '172.20.10.4',
     '*.local',
+    '*.trycloudflare.com',
   ],
   experimental: {
     globalNotFound: true,
